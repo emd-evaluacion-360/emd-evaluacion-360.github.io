@@ -9,17 +9,19 @@
   <title>Evaluación 360° EMD</title>
   <link rel="canonical" href="https://emd-evaluacion-360.github.io/">
   <link rel="stylesheet" href="wrapper.css">
+  <link rel="stylesheet" href="loading.css">
   <script defer src="endpoint.js"></script>
   <script defer src="protocol.js"></script>
+  <script defer src="loading.js"></script>
   <script defer src="wrapper.js"></script>
 </head>
 <body hidden>
-  <main id="status" aria-live="polite" aria-atomic="true">
+  <main id="status" class="emd-loading-page">
     <h1>Evaluación 360° EMD</h1>
-    <p id="message">Cargando tu evaluación…</p>
+    <p id="message" role="status" aria-live="polite">Cargando tu evaluación…</p>
+    <div id="loadingtips"></div>
     <button id="retry" type="button" hidden>Reintentar conexión</button>
   </main>
   <iframe id="portal" title="Portal de evaluación 360° EMD" hidden referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin allow-forms allow-downloads allow-popups allow-modals"></iframe>
 </body>
 </html>
-

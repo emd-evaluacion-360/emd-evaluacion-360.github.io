@@ -1,7 +1,7 @@
 (function (root) {
   'use strict';
   const CHANNEL = 'emd-github-v1';
-  const TIMEOUT_MS = 35000;
+  const TIMEOUT_MS = 90000;
   const validFragment = value => typeof value === 'string' &&
     (value === '' || /^#(?:token|reviewer)=[A-Za-z0-9-]{40,200}$/.test(value));
   const validOrigin = origin => origin === 'https://script.google.com' ||
@@ -62,4 +62,3 @@
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.EMDProtocol = api;
 })(typeof globalThis === 'object' ? globalThis : this);
-

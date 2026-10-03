@@ -9,10 +9,15 @@
   const retry = document.getElementById('retry');
   let session = null;
   let timer = null;
+  let slowTimer = null;
+  let cleanupTips = null;
+  const tips = document.getElementById('loadingtips');
   document.body.hidden = false;
 
   function stop() {
     clearTimeout(timer);
+    clearTimeout(slowTimer);
+    if (cleanupTips) { cleanupTips(); cleanupTips = null; }
     if (session) session.close();
     session = null;
     frame.hidden = true;
@@ -22,6 +27,7 @@
   function fail(text, canRetry) {
     stop();
     status.hidden = false;
+    tips.hidden = true;
     message.textContent = text;
     retry.hidden = !canRetry;
   }
@@ -35,12 +41,21 @@
     }
     status.hidden = false;
     message.textContent = 'Cargando tu evaluación…';
+    tips.hidden = false;
+    tips.innerHTML = window.EmdLoading.markup();
+    cleanupTips = window.EmdLoading.mount(tips);
+    slowTimer = setTimeout(function () {
+      message.textContent = 'La conexión está tardando un poco más. Seguimos esperando.';
+      retry.hidden = false;
+    }, 20000);
     retry.hidden = true;
     try {
       const nonce = protocol.createNonce(window.crypto);
       const url = protocol.frameURL(window.EMD_ENDPOINT, nonce);
       session = protocol.createSession(nonce, location.hash, function () {
         clearTimeout(timer);
+        clearTimeout(slowTimer);
+        if (cleanupTips) { cleanupTips(); cleanupTips = null; }
         status.hidden = true;
         frame.hidden = false;
       });
@@ -65,4 +80,3 @@
   retry.addEventListener('click', start);
   start();
 })();
-
